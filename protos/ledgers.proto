@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option go_package = "github.com/fine-track/ledgers-app/pb";
+
+import "google/protobuf/timestamp.proto";
+
+message Ledger {
+	string						_id				= 1;
+	string						ledger_id		= 2; // this is a custom id for the ledger (DD-MM-YYYY)
+	int64						total_expense	= 4;
+	int64						total_income	= 5;
+	google.protobuf.Timestamp	created_at		= 6;
+	google.protobuf.Timestamp	updated_at		= 7;
+}
+
+message RequestWithUserId {
+	string	user_id = 1;
+}
+
+message ResponseWithLedgers {
+	bool			success = 1;
+	repeated Ledger	ledgers = 2;
+	int32			page	= 3;
+}
+
+message RequestFilters {
+	string			user_id = 1;
+	int32			year	= 2;
+	repeated int32	months	= 3;
+	int32			page	= 4;
+}
+
+message RequestWithLedgerId {
+	string	user_id		= 1;
+	string	ledger_id	= 2;
+}
+
+service LedgerService {
+	rpc GetAll (RequestFilters) returns (ResponseWithLedgers) {};
+
+	rpc GetCurrentMonthLedger (RequestWithUserId) returns (ResponseWithLedgers) {};
+
+	rpc GetCurrentYearLedgers (RequestWithUserId) returns (ResponseWithLedgers) {};
+
+	rpc RemoveLedger (RequestWithLedgerId) returns (ResponseWithLedgers) {};
+
+	rpc UpdateLedger (RequestWithLedgerId) returns (ResponseWithLedgers) {};
+
+	rpc CreateLedger (Ledger) returns (ResponseWithLedgers) {};
+}
