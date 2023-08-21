@@ -23,8 +23,8 @@ func AuthMiddleware(c *gin.Context) {
 	}
 
 	splitted := strings.Split(authToken, " ")
-	if splitted[0] != "Bearer" || len(splitted) < 2 {
-		res.Message = "Invalid authorization token"
+	if splitted[0] != "Bearer" || len(splitted) < 2 || len(splitted) > 2 {
+		res.Message = "Invalid authorization token format"
 		res.Unauthorized(c)
 		c.Abort()
 		return
@@ -54,13 +54,11 @@ func AuthMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
-
 	if resp.StatusCode != http.StatusOK {
 		respData.Unauthorized(c)
 		c.Abort()
 		return
 	}
-
 	user := respData.Data
 	c.Set("user", &user)
 	c.Next()

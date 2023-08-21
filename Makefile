@@ -1,7 +1,7 @@
 .PHONY: dev build start
 
 dev:
-	go run ./main.go
+	go run ./*.go
 
 build:
 	go build  -o ./build/finetrack ./cmd/finetrack/main.go

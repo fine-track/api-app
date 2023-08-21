@@ -14,8 +14,10 @@ message CreateRecordRequest {
 	string						title		= 3;
 	int32						amount		= 4;
 	string						description	= 5;
+	string						date		= 8;
 	google.protobuf.Timestamp	created_at	= 6;
 	google.protobuf.Timestamp	updated_at	= 7;
+	string						user_id		= 9;
 }
 
 message Record {
@@ -24,8 +26,10 @@ message Record {
 	string						title		= 3;
 	int32						amount		= 4;
 	string						description	= 5;
+	string						date		= 8;
 	google.protobuf.Timestamp	created_at	= 6;
 	google.protobuf.Timestamp	updated_at	= 7;
+	string						user_id		= 9;
 }
 
 message DeleteRecordRequest {
@@ -34,22 +38,35 @@ message DeleteRecordRequest {
 
 message DeleteRecordResponse {
 	bool	success = 1;
+	string	message	= 3;
 }
 
 message UpdateRecordResponse {
 	bool	success	= 1;
 	Record	record	= 2;
+	string	message	= 3;
 }
 
 message GetRecordsRequest {
 	RecordType	type	= 1;
-	int32				page	= 2;
+	int32		page	= 2;
+	string		user_id	= 3;
 }
 
 message GetRecordsResponse {
-	bool							success		= 1;
-	repeated Record		records		= 2;
-	int32							next_page	= 3;
+	bool			success		= 1;
+	repeated Record	records		= 2;
+	int32			next_page	= 3;
+	string			message		= 4;
+}
+
+message PingRequest {
+	string	message	= 1;
+}
+
+message PingResponse {
+	string	message		= 1;
+	string	response	= 2;
 }
 
 service RecordsService {
@@ -60,4 +77,6 @@ service RecordsService {
 	rpc Delete(DeleteRecordRequest) returns (DeleteRecordResponse) {}
 
 	rpc GetRecords(GetRecordsRequest) returns (GetRecordsResponse) {}
+
+	rpc Ping(PingRequest) returns (PingResponse) {}
 }

@@ -1,4 +1,4 @@
-package handlers
+package main
 
 import (
 	"github.com/fine-track/api-app/utils"
