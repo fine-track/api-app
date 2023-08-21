@@ -60,11 +60,16 @@ func GetJournals(userId string, recordType string, page int32) ([]*pb.Record, er
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(results)
 	if !results.Success {
 		return nil, errors.New(results.Message)
 	}
-	return results.Records, err
-
+	if results.Records == nil {
+		d := []*pb.Record{}
+		return d, nil
+	} else {
+		return results.Records, nil
+	}
 }
 
 func CreateJournal(p *CreateJournalPayload) (*pb.UpdateRecordResponse, error) {

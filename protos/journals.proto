@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/fine-track/api-app/pb";
-
-import "google/protobuf/timestamp.proto";
+option go_package = "github.com/fine-track/journals-app/pb";
 
 enum RecordType {
 	EXPENSE = 0;
@@ -10,26 +8,26 @@ enum RecordType {
 }
 
 message CreateRecordRequest {
-	RecordType					type		= 2;
-	string						title		= 3;
-	int32						amount		= 4;
-	string						description	= 5;
-	string						date		= 8;
-	google.protobuf.Timestamp	created_at	= 6;
-	google.protobuf.Timestamp	updated_at	= 7;
-	string						user_id		= 9;
+	RecordType	type		= 2;
+	string		title		= 3;
+	int32		amount		= 4;
+	string		description	= 5;
+	string		date		= 8;
+	string		created_at	= 6;
+	string		updated_at	= 7;
+	string		user_id		= 9;
 }
 
 message Record {
-	string						id			= 1;
-	RecordType					type		= 2;
-	string						title		= 3;
-	int32						amount		= 4;
-	string						description	= 5;
-	string						date		= 8;
-	google.protobuf.Timestamp	created_at	= 6;
-	google.protobuf.Timestamp	updated_at	= 7;
-	string						user_id		= 9;
+	string		id			= 1;
+	RecordType	type		= 2;
+	string		title		= 3;
+	int32		amount		= 4;
+	string		description	= 5;
+	string		date		= 8;
+	string		created_at	= 6;
+	string		updated_at	= 7;
+	string		user_id		= 9;
 }
 
 message DeleteRecordRequest {

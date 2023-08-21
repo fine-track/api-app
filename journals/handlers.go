@@ -9,10 +9,16 @@ import (
 )
 
 func GetJournalsHandler(c *gin.Context) {
-	res, user := getInitialData(c)
+	res := utils.HTTPResponse{}
+	userId := c.Query("user_id")
+	if userId == "" {
+		res.Message = "User id not found"
+		res.BadRequest(c)
+		return
+	}
 	page, _ := strconv.ParseInt(c.Query("page"), 10, 32)
 	rType := c.Query("type")
-	if journals, err := GetJournals(user["_id"], rType, int32(page)); err != nil {
+	if journals, err := GetJournals(userId, rType, int32(page)); err != nil {
 		res.Message = err.Error()
 		res.BadRequest(c)
 	} else {
@@ -23,7 +29,7 @@ func GetJournalsHandler(c *gin.Context) {
 }
 
 func CreateJournalHandler(c *gin.Context) {
-	res, _ := getInitialData(c)
+	res := utils.HTTPResponse{}
 	payload := CreateJournalPayload{}
 	if err := c.BindJSON(&payload); err != nil {
 		log.Printf("unable to unmarshal JSON data from body\nerror: %s\nfile: journals/handlers.go:43", err)
@@ -49,7 +55,7 @@ func CreateJournalHandler(c *gin.Context) {
 }
 
 func UpdateJournalHandler(c *gin.Context) {
-	res, _ := getInitialData(c)
+	res := utils.HTTPResponse{}
 
 	recordId := c.Param("id")
 	if recordId == "" {
@@ -76,7 +82,7 @@ func UpdateJournalHandler(c *gin.Context) {
 }
 
 func RemoveJournalHandler(c *gin.Context) {
-	res, _ := getInitialData(c)
+	res := utils.HTTPResponse{}
 	recordId := c.Param("id")
 	if recordId == "" {
 		res.Message = "No id specified"
@@ -92,9 +98,9 @@ func RemoveJournalHandler(c *gin.Context) {
 	}
 }
 
-func getInitialData(c *gin.Context) (*utils.HTTPResponse, map[string]string) {
+func getInitialData(c *gin.Context) (*utils.HTTPResponse, map[string]interface{}) {
 	res := utils.HTTPResponse{}
 	u, _ := c.Get("user")
-	user := u.(map[string]string)
+	user := u.(map[string]interface{})
 	return &res, user
 }
